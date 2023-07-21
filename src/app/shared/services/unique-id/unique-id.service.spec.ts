@@ -10,6 +10,10 @@ describe(UniqueIdService.name, () => {
     should generate id when called with prefix`, () => {
       const id = service.generateUniqueIdWithPrefix('app');
       expect(id.startsWith('app-')).toBeTrue();
+
+      expect(true).toBeTrue();
+      expect(true).toBe(true);
+      expect(true).toBeTruthy();
   });
 
   it(`#${UniqueIdService.prototype.generateUniqueIdWithPrefix.name}
@@ -37,7 +41,9 @@ describe(UniqueIdService.name, () => {
     should throw when called with empty`, () => {
       const emptyValues = [null, undefined, '', '0', '1'];
       emptyValues.forEach(emptyValue => {
-        expect(() => service.generateUniqueIdWithPrefix(emptyValue)).toThrow();
+        expect(() => service.generateUniqueIdWithPrefix(emptyValue))
+          .withContext(`Empty value: ${emptyValue}`)
+          .toThrow();
       })
   });
 
