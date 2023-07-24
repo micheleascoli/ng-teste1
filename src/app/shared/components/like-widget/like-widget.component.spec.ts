@@ -1,8 +1,6 @@
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from "@angular/core/testing";
 import { LikeWidgetComponent } from "./like-widget.component";
-import { Component } from "@angular/compiler/src/core";
-import { UniqueIdService } from "../../services/unique-id/unique-id.service";
+import { LikeWidgetModule } from './like-widget.module';
 
 describe(LikeWidgetComponent.name, () => {
   /**
@@ -12,23 +10,46 @@ describe(LikeWidgetComponent.name, () => {
    *  de funções, um monte de métodos utilitários que você vai usar durante o teste.
    */
   let fixture: ComponentFixture<LikeWidgetComponent> = null;
+  let component: LikeWidgetComponent = null;
 
   beforeEach(async () =>{
     await TestBed.configureTestingModule({
-      declarations: [LikeWidgetComponent],
-      providers: [UniqueIdService],
-      imports: [FontAwesomeModule]
+      imports: [LikeWidgetModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LikeWidgetComponent);
+    component = fixture.componentInstance;
   });
 
   //Vai testar se no momento da fixture ser criada, não houve nenhum
   //problema para criação da instância do componente.
   it('Should create component', () => {
-    const instance = fixture.componentInstance;
-    expect(instance).toBeTruthy();
+    expect(component).toBeTruthy();
+  });
 
-  })
+  it('Should auto generate ID when id input property is missing', () => {
+    fixture.detectChanges();
+    expect(component.id).toBeTruthy();
+  });
+
+  it('Should NOT generate ID when id input property is present', () => {
+    const someId = 'someId';
+    component.id = someId;
+    fixture.detectChanges();
+    expect(component.id).toBe(someId);
+  });
+
+  it(`#${LikeWidgetComponent.prototype.like.name} should trigger emission when called`, () => {
+    //dispara ngOnInit()
+    fixture.detectChanges();
+
+    component.liked.subscribe(() => {
+      expect(true).toBeTrue();
+    });
+
+    component.like();
+  });
+
+  //it('', () => {});
 
 });
