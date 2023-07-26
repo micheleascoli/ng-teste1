@@ -39,15 +39,12 @@ describe(LikeWidgetComponent.name, () => {
     expect(component.id).toBe(someId);
   });
 
-  it(`#${LikeWidgetComponent.prototype.like.name} should trigger emission when called`, done => {
-    //dispara ngOnInit()
+  it(`#${LikeWidgetComponent.prototype.like.name} should trigger emission when called`, () => {
+    spyOn(component.liked, 'emit');
+    // A função spyOn() modificou o método component.liked transformando-o em um spy.
     fixture.detectChanges();
-
-    component.liked.subscribe(() => {
-      expect(true).toBeTrue();
-      done();
-    });
     component.like();
+    expect(component.liked.emit).toHaveBeenCalled();
   });
 
   //it('', () => {});
